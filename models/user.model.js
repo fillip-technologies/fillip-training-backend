@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: String,
         unique: true,
-        required: true
     },
     password: {
         type: String,
@@ -31,12 +30,10 @@ const userSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        // required: true,
     },
     role: {
         type: String,
         enum: ["Admin", "Student", "Instructor"],
-        // required: true,
     },
 }, {timestamps: true});
 
