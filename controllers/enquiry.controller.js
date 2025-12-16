@@ -19,56 +19,55 @@ export const createEnquiry = async(req, res) => {
     }
 } 
 
-export const getAllEnquiry = async(req, res) => {
-    try {
-        const {page = 1, limit = 10, search} = req.query;
-        const pageNum = parseInt(page);
-        const limitNum = parseInt(limit);
-        const filter = {}
-        if(search)
-        {
-            filter.$or = [
-                {name: {$regex: search, $options: "i"}},
-                {email: {$regex: search, $options: "i"}},
-                {phone: {$regex: search, $options: "i"}},
-                {id: {$regex: search, $options: "i"}},
-                {status: {$regex: search, $options: "i"}}
-            ]
-        }
-        const enquiry = await Enquiry.find(filter)
-        .select("id name email phone location college course message status remark")
-        .sort({ createdAt: -1 })
-        .skip((pageNum - 1) * limitNum)
-        .limit(limitNum)
+export const getAllEnquiry = async (req, res) => {
+  try {
+    const { page = 1, limit = 10, search } = req.query;
 
-        const totalEnquiries = await Enquiry.countDocuments()
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
 
-        if(enquiry === 0)
-        {
-            return res.status(200).json({
-                message: "No Enquiry Found",
-                data: [],
-                totalEnquiries: 0,
-                currentPage: pageNum,
-                totalPages: 0
-            });
-        }
-        return res.status(200).json({
-                message: "All Enquiry Fetched successfully",
-                data: enquiry,
-                totalEnquiries: totalEnquiries,
-                currentPage: pageNum,
-                totalPages: limitNum > 0 ? Math.ceil(totalEnquiries / limitNum) : 1
-            });
-        
-    } catch (error) {
-        return res.status(500).json({
-            message: "Internal server error",
-            success: false,
-            error: error.message
-        })
+    const filter = {};
+
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { phone: { $regex: search, $options: "i" } },
+        { status: { $regex: search, $options: "i" } },
+      ];
     }
-}
+
+    let query = Enquiry.find(filter)
+      .select("name email phone location college course message status remark")
+      .sort({ createdAt: -1 });
+
+    if (limitNum > 0) {
+      query = query
+        .skip((pageNum - 1) * limitNum)
+        .limit(limitNum);
+    }
+
+    const enquiry = await query;
+    const totalEnquiries = await Enquiry.countDocuments(filter);
+
+    return res.status(200).json({
+      message: "Enquiry fetched successfully",
+      data: enquiry,
+      totalEnquiries,
+      currentPage: pageNum,
+      totalPages:
+        limitNum > 0 ? Math.ceil(totalEnquiries / limitNum) : 1,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 
 
 export const getEnquiryById = async(req, res) => {
