@@ -38,7 +38,7 @@ export const getAllEnquiry = async (req, res) => {
     }
 
     let query = Enquiry.find(filter)
-      .select("name email phone location college course message status remark")
+      .select("id name email phone location college course message status remark")
       .sort({ createdAt: -1 });
 
     if (limitNum > 0) {
