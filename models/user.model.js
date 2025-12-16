@@ -22,8 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        unique: true,
-        required: true
+        default: ""
     },
     password: {
         type: String,
@@ -31,12 +30,11 @@ const userSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        // required: true,
     },
     role: {
         type: String,
         enum: ["Admin", "Student", "Instructor"],
-        // required: true,
+        required: true
     },
 }, {timestamps: true});
 
