@@ -4,81 +4,113 @@ import Batch from "../models/batch.model.js";
 import Student from "../models/student.model.js";
 import autoGenerateCertificate from "../utils/autoGenerateCertificate.js";
 
-export const addEnrollment = async(req, res) => {
-    try {
-        const data = req.body
-        const userId = req.user.id
-        data.userId = userId
-
-        const existingEnrollment = await Enrollment.findOne({userId: data.userId, courseId: data.courseId, batchId: data.batchId})
-        if(existingEnrollment)
-        {
-            return res.status(400).json({
-                message: "Enrollment already exists",
-                success: false
-            });
-        }
-        const studentData = await Student.findOne({userId: data.userId});
-        if(!studentData)
-        {
-            return res.status(404).json({
-                message: "Student Not Found",
-                success: false,
-            })
-        }
-        const courseData = await Course.findOne({id: data.courseId})
-        if(!courseData)
-        {
-            return res.status(404).json({
-                message: "Course Not found",
-                success: false
-            })
-        }
-        const batchData = await Batch.findOne({id: data.batchId})
-        if(!batchData)
-        {
-            return res.status(404).json({
-                message: "Batch not found",
-                success: false
-            })
-        }
-        const batchEnrollmentCount = await Enrollment.countDocuments({batchId: data.batchId, courseId: data.courseId})
-        if(batchEnrollmentCount >= batchData.capacity)
-        {
-            return res.status(400).json({
-                message: "Batch is full, cannot enroll more students",
-                success: false
-            });
-        }
-        const newEnrollment = new Enrollment(data);
-        await newEnrollment.save();
-
-        studentData.enrollmentId.push(newEnrollment.id);
-        await studentData.save();
-
-        batchData.totalStudent = batchEnrollmentCount + 1;
-        await batchData.save();
-
-        const totalCourseEnrollments = await Enrollment.countDocuments({
-        courseId: data.courseId
+export const addEnrollment = async (req, res) => {
+  try {
+    const role = req.user.role;
+    const data = req.body;
+    
+    if (role === "Admin") {
+      if (!data.createdBy) {
+        return res.status(400).json({
+          message: "createdBy is required when Admin enrolls a student",
+          success: false,
         });
-
-        courseData.totalEnrollment = totalCourseEnrollments;
-        await courseData.save();
-
-        return res.status(200).json({
-            message: "Student Enrolled Successfully",
-            success: true,
-            data: newEnrollment,
-        })
-    } catch (error) {
-        return res.status(500).json({
-        message: "Unable to enroll student",
-        error: error.message,
+      }
+    } 
+    else if (role === "Student") {
+      data.createdBy = req.user.id;
+    } 
+    else {
+      return res.status(403).json({
+        message: "Unauthorized role",
         success: false,
-    }); 
+      });
     }
-}
+
+    data.status = "Enrolled";
+    data.courseStatus = "In Progress";
+
+    const existingEnrollment = await Enrollment.findOne({
+      createdBy: data.createdBy,
+      courseId: data.courseId,
+      batchId: data.batchId,
+    });
+
+    if (existingEnrollment) {
+      return res.status(400).json({
+        message: "Enrollment already exists",
+        success: false,
+      });
+    }
+
+    const studentData = await Student.findOne({ userId: data.createdBy });
+    if (!studentData) {
+      return res.status(404).json({
+        message: "Student Not Found",
+        success: false,
+      });
+    }
+
+    const courseData = await Course.findOne({ id: data.courseId });
+    if (!courseData) {
+      return res.status(404).json({
+        message: "Course Not found",
+        success: false,
+      });
+    }
+
+    const batchData = await Batch.findOne({ id: data.batchId });
+    if (!batchData) {
+      return res.status(404).json({
+        message: "Batch not found",
+        success: false,
+      });
+    }
+
+    const batchEnrollmentCount = await Enrollment.countDocuments({
+      batchId: data.batchId,
+      courseId: data.courseId,
+    });
+
+    if (batchEnrollmentCount >= batchData.capacity) {
+      return res.status(400).json({
+        message: "Batch is full, cannot enroll more students",
+        success: false,
+      });
+    }
+
+    const newEnrollment = new Enrollment(data);
+    await newEnrollment.save();
+
+    studentData.enrollmentId.push(newEnrollment.id);
+    await studentData.save();
+
+    batchData.totalStudent += 1;
+    await batchData.save();
+
+    const totalCourseEnrollments = await Enrollment.countDocuments({
+      courseId: data.courseId,
+    });
+
+    courseData.totalEnrollment = totalCourseEnrollments;
+    await courseData.save();
+
+    return res.status(200).json({
+      message: "Student Enrolled Successfully",
+      success: true,
+      data: newEnrollment,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Unable to enroll student",
+      error: error.message,
+      success: false,
+    });
+  }
+};
+
+
 
 export const completeCourse = async(req, res) => {
     try {

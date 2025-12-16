@@ -6,7 +6,7 @@ const enrollmentSchema = new mongoose.Schema({
         type: String,
         default: () => generateUniqueId("ENROLLMENT")
     },
-    userId: {
+    createdBy: {
         type: String,
         required: true
     },
