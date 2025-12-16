@@ -32,6 +32,7 @@ export const getAllEnquiry = async(req, res) => {
                 {email: {$regex: search, $options: "i"}},
                 {phone: {$regex: search, $options: "i"}},
                 {id: {$regex: search, $options: "i"}},
+                {status: {$regex: search, $options: "i"}}
             ]
         }
         const enquiry = await Enquiry.find(filter)
