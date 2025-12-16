@@ -7,10 +7,7 @@ import Student from "../models/student.model.js";
 export const registerUser = async(req, res) => {
     try {
         const data = req.body;
-        const existingUser = await User.findOne({ $or: [
-            { email: data.email },
-            { phone: data.phone }
-        ]})
+        const existingUser = await User.findOne({ email: data.email})
         if(existingUser)
         {
             return res.status(409).json({
