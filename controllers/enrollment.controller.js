@@ -8,11 +8,11 @@ export const addEnrollment = async (req, res) => {
   try {
     const role = req.user.role;
     const data = req.body;
-    
+
     if (role === "Admin") {
       if (!data.createdBy) {
         return res.status(400).json({
-          message: "createdBy is required when Admin enrolls a student",
+          message: "createdBy is missing",
           success: false,
         });
       }
