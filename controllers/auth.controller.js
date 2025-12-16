@@ -7,10 +7,12 @@ import Student from "../models/student.model.js";
 export const registerUser = async(req, res) => {
     try {
         const data = req.body;
-        const existingUser = await User.findOne({ $or: [
-            { email: data.email },
-            { phone: data.phone }
-        ]})
+         // const isAdmin = await User.findOne({role: data.role});
+        // if(isAdmin)
+        // {
+        //     return res.status(409).json({message: "No more admin allowed", success: false})
+        // }
+        const existingUser = await User.findOne({ email: data.email})
         if(existingUser)
         {
             return res.status(409).json({
@@ -63,15 +65,21 @@ export const loginUser = async(req, res) => {
             })
         }
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_KEY, {expiresIn: '2h'});
-        return res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 2 * 60 * 60 * 1000
-        }).status(200).json({
-            message: "User Logged in successfully",
-            success: true,
-            data: user
-        }); 
+         const isProduction = process.env.NODE_ENV === "production";
+
+        return res
+            .cookie("token", token, {
+                httpOnly: true,
+                secure: isProduction,
+                sameSite: isProduction ? "none" : "lax",
+                maxAge: 2 * 60 * 60 * 1000,
+            })
+            .status(200)
+            .json({
+                message: "User logged in successfully",
+                success: true,
+                data: user,
+            }); 
     } catch (error) {
         return res.status(500).json({
             message: "Internal server error",

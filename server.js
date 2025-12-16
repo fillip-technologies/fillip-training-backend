@@ -20,6 +20,7 @@ import courseCategoryRoutes from "./routes/courseCategory.route.js";
 // import marksheetRoutes from "./routes/marksheet.route.js";
 
 const app = express();
+dotenv.config();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 const corsOptions = {
@@ -29,7 +30,7 @@ const corsOptions = {
     }
     const allowedOrigins = [
       "http://localhost:5173",
-      "https://nextindia-training.fillipsoftware.com/"
+      "https://nextindia-training.fillipsoftware.com"
     ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -42,7 +43,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 
