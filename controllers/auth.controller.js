@@ -7,6 +7,11 @@ import Student from "../models/student.model.js";
 export const registerUser = async(req, res) => {
     try {
         const data = req.body;
+        const isAdmin = await User.findOne({role: data.role});
+        if(isAdmin)
+        {
+            return res.status(409).json({message: "No more admin allowed", success: false})
+        }
         const existingUser = await User.findOne({ email: data.email})
         if(existingUser)
         {
