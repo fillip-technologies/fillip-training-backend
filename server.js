@@ -16,6 +16,7 @@ import enrollmentRoutes from "./routes/enrollment.route.js";
 import certificateRoutes from "./routes/certificate.route.js";
 import courseCategoryRoutes from "./routes/courseCategory.route.js";
 import newEnrollmentRoutes from "./routes/newEnrollment.route.js";
+import contactRoutes from "./routes/contact.route.js";
 
 // import assignmentRoutes from "./routes/assignment.route.js";
 // import marksheetRoutes from "./routes/marksheet.route.js";
@@ -63,6 +64,7 @@ app.use("/api/enquiry", enquiryRoutes);
 app.use("/api/enrollment", enrollmentRoutes);
 app.use("/api/certificate", certificateRoutes);
 app.use("/api/newEnrollment", newEnrollmentRoutes);
+app.use("/api/contact", contactRoutes);
 
 // app.use("/api/assignment", assignmentRoutes);
 // app.use("/api/marksheet", marksheetRoutes);

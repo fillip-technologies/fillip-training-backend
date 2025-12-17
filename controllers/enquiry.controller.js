@@ -50,10 +50,23 @@ export const getAllEnquiry = async (req, res) => {
     const enquiry = await query;
     const totalEnquiries = await Enquiry.countDocuments(filter);
 
+    if(enquiry.length === 0)
+        {
+            return res.status(200).json({
+            message: "No data found",
+            success: true,
+            data: 0,
+            totalEnquiries: 0,
+            currentPage: pageNum,
+            totalPages: 0
+        })
+    }
+
     return res.status(200).json({
       message: "Enquiry fetched successfully",
+      success: true,
       data: enquiry,
-      totalEnquiries,
+      totalEnquiries: totalEnquiries,
       currentPage: pageNum,
       totalPages:
         limitNum > 0 ? Math.ceil(totalEnquiries / limitNum) : 1,
