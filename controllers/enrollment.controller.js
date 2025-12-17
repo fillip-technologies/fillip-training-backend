@@ -27,7 +27,7 @@ export const addEnrollment = async (req, res) => {
       });
     }
 
-    data.status = "Enrolled";
+    data.enrollmentStatus = "Enrolled";
     data.courseStatus = "In Progress";
 
     const existingEnrollment = await Enrollment.findOne({
@@ -125,7 +125,7 @@ export const completeCourse = async(req, res) => {
                 success: false,
             })
         }
-        enrollment.status = "Completed";
+        enrollment.enrollmentStatus = "Completed";
         enrollment.courseStatus = "Completed";
         await enrollment.save();
 
@@ -191,7 +191,7 @@ export const getAllEnrollment = async(req, res) => {
                         { "batchData.batchName": { $regex: search, $options: "i" } },
                         { "userData.firstName": { $regex: search, $options: "i" } },
                         { "userData.lastName": { $regex: search, $options: "i" } },
-                        { "status": { $regex: search, $options: "i" } },
+                        { "enrollmentStatus": { $regex: search, $options: "i" } },
                     ],
                 },
             });
@@ -212,7 +212,7 @@ export const getAllEnrollment = async(req, res) => {
                 courseName: "$courseData.courseName",
                 batchName: "$batchData.batchName",
                 enrollDate: 1,
-                status: 1,
+                enrollmentStatus: 1,
                 progress: 1,
             }
         });
@@ -298,7 +298,7 @@ export const getEnrollmentById = async(req, res) => {
                         { "batchData.batchName": { $regex: search, $options: "i" } },
                         { "userData.firstName": { $regex: search, $options: "i" } },
                         { "userData.lastName": { $regex: search, $options: "i" } },
-                        { "status": { $regex: search, $options: "i" } },
+                        { "enrollmentStatus": { $regex: search, $options: "i" } },
                     ],
                 },
             });
@@ -313,7 +313,7 @@ export const getEnrollmentById = async(req, res) => {
                 courseName: "$courseData.courseName",
                 batchName: "$batchData.batchName",
                 enrollDate: 1,
-                status: 1,
+                enrollmentStatus: 1,
                 progress: 1,
             }
         });

@@ -22,13 +22,15 @@ const enrollmentSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    status: {
+    enrollmentStatus: {
         type: String,
-        enum: ["Enrolled", "Completed"], 
+        enum: ["Pending","Enrolled"], 
+        default: "Pending"
     },
     courseStatus: {
         type: String,
-        enum: ["In Progress", "Completed"]
+        enum: ["In Progress", "Completed"],
+        default: "Pending"
     }
 }, {timestamps: true})
 

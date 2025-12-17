@@ -66,7 +66,7 @@ export const getAllStudent = async(req, res) => {
                     in: {
                         id: "$$en.id",
                         enrollDate: "$$en.enrollDate",
-                        status: "$$en.status",
+                        enrollmentStatus: "$$en.enrollmentStatus",
                         courseStatus: "$$en.courseStatus",
                         courseName: "$courseInfo.courseName",
                         // courseId: "$$en.courseId",
@@ -180,7 +180,7 @@ export const getStudentById = async(req, res) => {
                     in: {
                         id: "$$en.id",
                         enrollDate: "$$en.enrollDate",
-                        status: "$$en.status",
+                        enrollmentStatus: "$$en.enrollmentStatus",
                         courseStatus: "$$en.courseStatus",
                         courseName: "$courseInfo.courseName",
                         // courseId: "$$en.courseId",
