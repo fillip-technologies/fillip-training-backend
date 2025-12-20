@@ -1,5 +1,6 @@
 import NewEnrollment from "../models/newEnrollment.model.js";
 import Enquiry from "../models/enquiry.model.js";
+import autoGenerateCertificate from "../utils/autoGenerateCertificate.js";
 
 export const createNewEnrollment = async(req, res) => {
   try {
@@ -15,6 +16,7 @@ export const createNewEnrollment = async(req, res) => {
     }
 
     const enrollment = new NewEnrollment({
+      enquiryId: enquiry.id, 
       name: enquiry.name,
       email: enquiry.email,
       phone: enquiry.phone,
@@ -165,28 +167,36 @@ export const getEnrollmentById = async(req, res) => {
     }
 }
 
-export const updateNewEnrollment = async(req, res) => {
-    try {
-        const {id} = req.params
-        const updatedData = req.body
-        const updatedEnrollmentData = await NewEnrollment.findOneAndUpdate({id}, updatedData, {new: true})
-        if(!updatedEnrollmentData)
-        {
-            return res.status(404).json({
-                message: "Enrollment not found",
-                success: false
-            })
-        }
-        return res.status(200).json({
-            message: "Enrollment updated successfully",
-            success: true,
-            data: updatedEnrollmentData
-        })
-    } catch (error) {
-        return res.status(500).json({
-            message: "Unable to update",
-            success: false,
-            error: error.message
-        })
+export const completeEnrollment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const enrollment = await NewEnrollment.findOne({ id });
+
+    if (!enrollment) {
+      return res.status(404).json({
+        success: false,
+        message: "Enrollment not found"
+      });
     }
-}
+
+    enrollment.enrollmentStatus = "Enrolled";
+    await enrollment.save();
+
+    const certificate = await autoGenerateCertificate(enrollment.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Enrollment completed & certificate generated",
+      certificateId: certificate.id,
+      downloadUrl: `/api/certificates/download/${certificate.id}`
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to complete enrollment",
+      error: error.message
+    });
+  }
+};

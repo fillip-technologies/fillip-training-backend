@@ -6,6 +6,10 @@ const newEnrollmentSchema = new mongoose.Schema({
         type: String,
         default: () => generateUniqueId("newEnrollment")
     },
+    enquiryId: {
+        type: String,
+        required: true
+    },
    name: {
         type: String,
         required: true
@@ -30,7 +34,6 @@ const newEnrollmentSchema = new mongoose.Schema({
         type: String,
         enum: ["Pending", "Enrolled"], 
         default: "Pending"
-
     }
 }, {timestamps: true})
 

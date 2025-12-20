@@ -6,20 +6,24 @@ const certificateSchema = new mongoose.Schema({
         type: String,
         default: () => generateUniqueId("CERTIFICATE")
     },
-    userId: {
+    // userId: {
+    //     type: String,
+    //     required: true
+    // },
+    // courseId: {
+    //     type: String,
+    //     required: true
+    // },
+    name: {
         type: String,
         required: true
     },
-    courseId: {
+    course: {
         type: String,
         required: true
     },
     issueDate: {
         type: Date,
-        required: true
-    },
-    certificateURL: {
-        type: String,
         required: true
     },
 }, {timestamps: true});

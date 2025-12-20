@@ -62,7 +62,7 @@ app.use("/api/class", classRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/enquiry", enquiryRoutes);
 app.use("/api/enrollment", enrollmentRoutes);
-app.use("/api/certificate", certificateRoutes);
+app.use("/api/certificates", certificateRoutes);
 app.use("/api/newEnrollment", newEnrollmentRoutes);
 app.use("/api/contact", contactRoutes);
 
