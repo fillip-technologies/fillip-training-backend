@@ -25,7 +25,7 @@ export const createBatch = async(req, res) => {
         if(existingBatch)
         {
             return res.status(409).json({
-                message: "Batch already exist",
+                message: "Batch already exist",  
                 success: false
             });
         }

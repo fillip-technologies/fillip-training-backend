@@ -34,6 +34,8 @@ export const getAllEnquiry = async (req, res) => {
         { email: { $regex: search, $options: "i" } },
         { phone: { $regex: search, $options: "i" } },
         { status: { $regex: search, $options: "i" } },
+        { course: { $regex: search, $options: "i" } },
+
       ];
     }
 
