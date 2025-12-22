@@ -3,16 +3,16 @@ import mongoose from "mongoose";
 const attendanceSchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: true,
+        required: [true, "UserId is required"],
     },
     date: {
         type: Date,
-        required: true,
+        required: [true, "Date is required"],
     },
     status: {
         type: String,
         enum: ["Present", "Absent", "Leave"],
-        required: true,
+        required: [true, "Status is required"],
     }
 }, {timestamps: true});
 

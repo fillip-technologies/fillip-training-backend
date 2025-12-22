@@ -8,27 +8,41 @@ const newEnrollmentSchema = new mongoose.Schema({
     },
     enquiryId: {
         type: String,
-        required: true
+        required: [true, "EnquiryId is required for enrollment"]
     },
    name: {
         type: String,
-        required: true
+        required: [true, "Name is required"]
    },
-    email: {
+   email: {
         type: String,
-        required: true
+        unique: true,
+        required: [true, "Email is required"],
+        lowercase: true,
+        trim: true,
+        match: [
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            "Please enter a valid email address",
+        ],
     },
+
     phone: {
-        type: Number,
-        required: true
+        type: String,
+        default: "",
+        trim: true,
+        minlength: [10, "Phone number must be at least 10 digits"],
+        match: [
+            /^[0-9]+$/,
+            "Phone number should contain only digits",
+        ],
     },
     location: {
         type: String,
-        required: true,
+        required: [true, "Location is required"],
     },
     course: {
         type: String,
-        required: true
+        required: [true, "Course is required"]
     },
     enrollmentStatus: {
         type: String,

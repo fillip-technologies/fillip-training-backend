@@ -8,15 +8,15 @@ const enrollmentSchema = new mongoose.Schema({
     },
     createdBy: {
         type: String,
-        required: true
+        required: [true, "CreatedBy is required"]
     },
     courseId: {
         type: String,
-        required: true,
+        required: [true, "CourseId is required"],
     },
     batchId: {
         type: String,
-        required: true
+        required: [true, "BatchId is required"]
     },
     enrollDate: {
         type: Date,

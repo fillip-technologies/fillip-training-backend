@@ -9,7 +9,7 @@ const courseCategory = new mongoose.Schema({
     name: {
         type: String,
         unique: true,
-        required: true
+        required: [true, "Category Name is required"]
     },
 }, {timestamps: true});
 

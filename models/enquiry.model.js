@@ -9,28 +9,41 @@ const enquirySchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true,
+        required: [true, "Name is required"],
     },
-    email: {
+     email: {
         type: String,
-        required: true,
+        unique: true,
+        required: [true, "Email is required"],
+        lowercase: true,
+        trim: true,
+        match: [
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            "Please enter a valid email address",
+        ],
     },
+
     phone: {
         type: String,
-        required: true,
-
+        default: "",
+        trim: true,
+        minlength: [10, "Phone number must be at least 10 digits"],
+        match: [
+            /^[0-9]+$/,
+            "Phone number should contain only digits",
+        ],
     }, 
     location: {
         type: String,
-        required: true,
+        required: [true, "Location is required"],
     },
     college: {
         type: String,
-        required: true,
+        required: [true, "College is required"],
     },
     course: {
         type: String,
-        required: true
+        required: [true, "Course is required"]
     },
     message: {
         type: String,

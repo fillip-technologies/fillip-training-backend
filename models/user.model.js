@@ -9,24 +9,38 @@ const userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: true
+        required: [true, "First name is required"]
     },
     lastName: {
         type: String,
-        required: true
+        required: [true, "Last name is required"]
     },
-    email: {
+   email: {
         type: String,
         unique: true,
-        required: true
+        required: [true, "Email is required"],
+        lowercase: true,
+        trim: true,
+        match: [
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            "Please enter a valid email address",
+        ],
     },
+
     phone: {
         type: String,
-        default: ""
+        default: "",
+        trim: true,
+        minlength: [10, "Phone number must be at least 10 digits"],
+        match: [
+            /^[0-9]+$/,
+            "Phone number should contain only digits",
+        ],
     },
+
     password: {
         type: String,
-        required: true
+        required: [true, "Password is required"]
     },
     location: {
         type: String,
@@ -34,7 +48,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ["Admin", "Student", "Instructor"],
-        required: true
+        required: [true, "Role is required"]
     },
 }, {timestamps: true});
 

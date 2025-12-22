@@ -16,15 +16,15 @@ const certificateSchema = new mongoose.Schema({
     // },
     name: {
         type: String,
-        required: true
+        required: [true, "Name is required"]
     },
     course: {
         type: String,
-        required: true
+        required: [true, "Course is required"]
     },
     issueDate: {
         type: Date,
-        required: true
+        required: [true, "Issue date is required"]
     },
 }, {timestamps: true});
 certificateSchema.set('toJSON', {

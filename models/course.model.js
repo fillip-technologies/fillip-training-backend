@@ -7,23 +7,23 @@ const courseSchema = new mongoose.Schema({
     },
     courseCategoryId: {
         type: String,
-        required: true,
+        required: [true, "Course category name is required"],
     },
     courseName: {
         type: String,
-        required: true,
+        required: [true, "Course name is required"],
     },
     courseDuration: {
         type: String,
-        required: true,
+        required: [true, "Course duration is required"],
     },
     coursePrice: {
         type: String,
-        required: true,
+        required: [true, "Course price is required"],
     },
     instructorId: {
       type: String,
-      required: true
+      required: [true, "InstructorId is required"]
     },
     batchId: {
         type: [String],
@@ -37,11 +37,11 @@ const courseSchema = new mongoose.Schema({
         {
             moduleName: {
                 type: String,
-                required: true,
+                required: [true, "Module Name is required"],
             },
             moduleDetails: {
                 type: String,
-                required: true
+                required: [true, "Module details is required"]
             },
         }
     ]

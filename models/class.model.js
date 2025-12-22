@@ -8,23 +8,23 @@ const classSchema = new mongoose.Schema({
     },
     moduleName: {
         type: String,
-        required: true,
+        required: [true, "Module name is required"],
     },
     classTime: {
         type: String,
-        required: true,
+        required: [true, "Class time is required"],
     },
     courseId: {
         type: String,
-        required: true
+        required: [true, "CourseId is required"],
     },
     batchId: {
         type: String,
-        required: true,
+        required: [true, "BatchId is required"],
     },
     instructorId: {
         type: String,
-        required: true
+        required: [true, "InstructorId is required"],
     }
 }, {timestamps: true});
 

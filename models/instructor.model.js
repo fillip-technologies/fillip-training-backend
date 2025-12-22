@@ -4,7 +4,7 @@ const instructorSchema = new mongoose.Schema({
   userId: {
   type: String,
   ref: "User",
-  required: true,
+  required: [true, "UserId is required"],
   unique: true
   },
     specialization: {

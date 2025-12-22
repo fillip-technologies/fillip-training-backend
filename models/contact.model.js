@@ -8,19 +8,32 @@ const contactSchema = new mongoose.Schema({
     },
     fullName: {
         type: String,
-        required: true
+        required: [true, "Full name is required"]
     },
-    email: {
+   email: {
         type: String,
-        default: ""
+        unique: true,
+        required: [true, "Email is required"],
+        lowercase: true,
+        trim: true,
+        match: [
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            "Please enter a valid email address",
+        ],
     },
     phone: {
         type: String,
-        default: ""
+        default: "",
+        trim: true,
+        minlength: [10, "Phone number must be at least 10 digits"],
+        match: [
+            /^[0-9]+$/,
+            "Phone number should contain only digits",
+        ],
     },
     message: {
         type: String,
-        required: true
+        required: [true, "Message is required"]
     },
 }, {timestamps: true})
 

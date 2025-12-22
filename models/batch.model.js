@@ -8,16 +8,16 @@ const batchSchema = new mongoose.Schema ({
     },
     batchName: {
         type: String,
-        required: true,
-        unique: true
+        required: [true, "Batch name is required"],
+        unique: [true, "Unique batch name is required"]
     },
     courseId: {
         type: String,
-        required: true
+        required: [true, "CourseId is required"]
     },
     instructorId: {
         type: String,
-        required: true
+        required: [true, "InstructorId is required"]
     },
     studentId: {
         type: String,
@@ -25,33 +25,33 @@ const batchSchema = new mongoose.Schema ({
     },
     batchTiming: {
         type: String,
-        required: true,
+        required: [true, "Batch timing is required"],
     },
     startDate: {
         type: Date,
-        required: true,
+        required: [true, "Start date is required"],
+    },
+    endDate: {
+        type: Date,
+        required: [true, "End date is required"],
     },
     classId: {
         type: [String],
         default: []
     },
-    endDate: {
-        type: Date,
-        required: true,
-    },
     mode: {
         type: String,
         enum: ["Online", "Offline"],
-        required: true,
+        required: [true, "Mode is required"],
     },
     status: {
         type: String,
         enum: ["Ongoing", "Will Start"],
-        required: true,
+        required: [true, "Status is required"],
     },
     capacity: {
         type: Number,
-        required: true
+        required: [true, "Capacity is required"]
     },
     totalStudent: {
         type: Number,
