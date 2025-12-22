@@ -1,4 +1,4 @@
-import Attendance from "../models/attendance.model.js";
+ import Attendance from "../models/attendance.model.js";
 import User from "../models/user.model.js";
 
 export const markAttendance = async(req, res) => {

@@ -47,6 +47,9 @@ export const getAllNewEnrollment = async(req, res) => {
                 phone: 1,
                 enquiryId: 1,
                 enrollmentStatus: 1,
+                downloadUrl: 1,
+                certificateId: 1,
+
                 courseName: "$courseInfo.courseName"
             }
         })
@@ -109,6 +112,8 @@ export const getEnrollmentById = async(req, res) => {
                 phone: 1,
                 enquiryId: 1,
                 enrollmentStatus: 1,
+                downloadUrl: 1,
+                certificateId: 1,
                 courseName: "$courseInfo.courseName"
             }
         })
@@ -144,13 +149,15 @@ export const completeEnrollment = async (req, res) => {
 
     enrollment.enrollmentStatus = "Enrolled";
     await enrollment.save();
-
     const certificate = await autoGenerateCertificate(enrollment.id);
+    enrollment.certificateId = certificate.id;
+    enrollment.downloadUrl = `/api/certificates/download/${certificate.id}`;
+    await enrollment.save();
 
     return res.status(200).json({
       success: true,
       message: "Enrollment completed & certificate generated",
-      certificateId: certificate.id,
+      certificateId: certificate.id, 
       downloadUrl: `/api/certificates/download/${certificate.id}`
     });
 

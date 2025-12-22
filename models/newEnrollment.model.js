@@ -48,6 +48,14 @@ const newEnrollmentSchema = new mongoose.Schema({
         type: String,
         enum: ["Pending", "Enrolled"], 
         default: "Pending"
+    },
+    certificateId: {
+        type: String,
+        default: ""
+    },
+    downloadUrl: {
+        type: String,
+        default: ""
     }
 }, {timestamps: true})
 
