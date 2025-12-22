@@ -1,23 +1,44 @@
 import Enquiry from "../models/enquiry.model.js"
+import NewEnrollment from "../models/newEnrollment.model.js"
 
-export const createEnquiry = async(req, res) => {
-    try {
-        const data = req.body;
-        const newEnquiry = new Enquiry(data);
-        await newEnquiry.save();
-        return res.status(201).json({
-            message: "Enquiry created successfully",
-            success: true,
-            data: newEnquiry
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message: "Internal Server Error",
-            success: false,
-            error: error.message
-        });
-    }
-} 
+export const createEnquiryWithEnrollment = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const enquiry = new Enquiry({
+      ...data,
+      status: "Enquiry Completed"
+    });
+    await enquiry.save();
+
+    const enrollment = new NewEnrollment({
+      enquiryId: enquiry.id,
+      name: enquiry.name,
+      email: enquiry.email,
+      phone: enquiry.phone,
+      location: enquiry.location,
+      course: enquiry.course
+    });
+    await enrollment.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Enquiry & Enrollment created successfully",
+      data: {
+        enquiry,
+        enrollment
+      }
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to create Enquiry & Enrollment",
+      error: error.message
+    });
+  }
+};
+ 
 
 export const getAllEnquiry = async (req, res) => {
   try {

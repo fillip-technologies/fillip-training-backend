@@ -1,8 +1,8 @@
 import PDFDocument from "pdfkit";
 import Certificate from "../models/certificate.model.js";
 import NewEnrollment from "../models/newEnrollment.model.js";
-// import User from "../models/user.model.js";
-// import Course from "../models/course.model.js"
+import User from "../models/user.model.js";
+import Course from "../models/course.model.js"
 
 // export const downloadCertificate = async(req, res) => {
 //     try {
@@ -143,3 +143,73 @@ export const downloadCertificate = async (req, res) => {
         });
     }
 };
+
+
+// import puppeteer from "puppeteer";
+// import fs from "fs";
+// import path from "path";
+// import Certificate from "../models/certificate.model.js";
+// import NewEnrollment from "../models/newEnrollment.model.js";
+
+// export const downloadCertificate = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const certificate = await Certificate.findOne({ id });
+//     if (!certificate) {
+//       return res.status(404).json({ message: "Certificate Not Found" });
+//     }
+
+//     const enrollment = await NewEnrollment.findOne({
+//       name: certificate.name,
+//       course: certificate.course,
+//     });
+
+//     if (!enrollment) {
+//       return res.status(404).json({ message: "Enrollment Not Found" });
+//     }
+
+//     let html = fs.readFileSync(
+//       path.join(process.cwd(), "certificate.html"),
+//       "utf8"
+//     );
+//     html = html
+//       .replace("{{name}}", enrollment.name)
+//       .replace("{{course}}", enrollment.course)
+//       .replace("{{description}}", certificate.description || "")
+//       .replace("{{certificateId}}", certificate.id)
+//       .replace(
+//         "{{issueDate}}",
+//         new Date(certificate.issueDate).toDateString()
+//       );
+
+//     const browser = await puppeteer.launch({
+//       headless: "new",
+//       args: ["--no-sandbox", "--disable-setuid-sandbox"],
+//     });
+
+//     const page = await browser.newPage();
+//     await page.setContent(html, { waitUntil: "networkidle0" });
+
+//     const pdfBuffer = await page.pdf({
+//       format: "A4",
+//       printBackground: true,
+//       landscape: true,
+//     });
+
+//     await browser.close();
+
+//     res.set({
+//       "Content-Type": "application/pdf",
+//       "Content-Disposition": `attachment; filename=${id}.pdf`,
+//     });
+
+//     res.send(pdfBuffer);
+
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Internal Server Error",
+//       error: error.message,
+//     });
+//   }
+// };

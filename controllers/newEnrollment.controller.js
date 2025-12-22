@@ -2,48 +2,6 @@ import NewEnrollment from "../models/newEnrollment.model.js";
 import Enquiry from "../models/enquiry.model.js";
 import autoGenerateCertificate from "../utils/autoGenerateCertificate.js";
 
-export const createNewEnrollment = async(req, res) => {
-  try {
-    const { enquiryId } = req.body;
-
-    const enquiry = await Enquiry.findOne({ id: enquiryId });
-
-    if (!enquiry) {
-      return res.status(404).json({
-        success: false,
-        message: "Enquiry not found"
-      });
-    }
-
-    const enrollment = new NewEnrollment({
-      enquiryId: enquiry.id, 
-      name: enquiry.name,
-      email: enquiry.email,
-      phone: enquiry.phone,
-      location: enquiry.location,
-      course: enquiry.course
-    });
-
-    await enrollment.save();
-
-    enquiry.status = "Enquiry Completed";
-    await enquiry.save();
-
-    return res.status(201).json({
-      success: true,
-      message: "Enrollment created successfully",
-      data: enrollment
-    });
-
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Enrollment failed",
-      error: error.message
-    });
-  }
-};
-
 
 export const getAllNewEnrollment = async(req, res) => {
     try {
@@ -87,6 +45,8 @@ export const getAllNewEnrollment = async(req, res) => {
                 name: 1,
                 email: 1,
                 phone: 1,
+                enquiryId: 1,
+                enrollmentStatus: 1,
                 courseName: "$courseInfo.courseName"
             }
         })
@@ -147,6 +107,8 @@ export const getEnrollmentById = async(req, res) => {
                 name: 1,
                 email: 1,
                 phone: 1,
+                enquiryId: 1,
+                enrollmentStatus: 1,
                 courseName: "$courseInfo.courseName"
             }
         })

@@ -1,8 +1,8 @@
 import express from "express"
-import {createEnquiry, getAllEnquiry, getEnquiryById, updateEnquiry} from "../controllers/enquiry.controller.js"
+import {createEnquiryWithEnrollment, getAllEnquiry, getEnquiryById, updateEnquiry} from "../controllers/enquiry.controller.js"
 const router = express.Router()
 
-router.post("/", createEnquiry);
+router.post("/", createEnquiryWithEnrollment);
 router.get("/", getAllEnquiry);
 router.get("/:id", getEnquiryById);
 router.put("/:id", updateEnquiry);
