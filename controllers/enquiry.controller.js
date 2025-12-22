@@ -7,7 +7,6 @@ export const createEnquiryWithEnrollment = async (req, res) => {
 
     const enquiry = new Enquiry({
       ...data,
-      status: "Enquiry Completed"
     });
     await enquiry.save();
 
