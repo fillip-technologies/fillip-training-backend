@@ -102,3 +102,27 @@ export const updateContact = async(req, res) => {
         })
     }
 }
+
+export const deleteContact = async(req, res) => {
+    try {
+        const {id} = req.params
+        const deletedContact = await Contact.findOneAndDelete({id})
+        if(!deletedContact)
+        {
+            return res.status(404).json(404).json({
+                message: "Contact not found",
+                success: false
+            })
+        }
+        return res.status(200).json({
+            message: "Contact deleted successfully",
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false,
+            error: error.message,
+        })
+    }
+}

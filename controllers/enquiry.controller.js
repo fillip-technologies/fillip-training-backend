@@ -156,3 +156,27 @@ export const updateEnquiry = async(req, res) => {
         })
     }
 }
+
+export const deleteEnquiry = async(req, res) => {
+  try {
+    const {id} = req.params
+    const deletedEnquiry = await Enquiry.findOneAndDelete({id})
+    if(!deletedEnquiry)
+    {
+      return res.status(404).json({
+        message: "Enquiry not found",
+        success: false,
+      })
+    }
+    return res.status(200).json({
+      message: "Enquiry deleted successfully",
+      success: true,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: error.message
+    })
+  }
+}

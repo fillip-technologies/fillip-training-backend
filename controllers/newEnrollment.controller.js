@@ -56,7 +56,8 @@ export const getAllNewEnrollment = async(req, res) => {
 
         const enrollments = await NewEnrollment.aggregate(pipeline);
         const totalEnrollments = await NewEnrollment.countDocuments();
-
+        const enrolledCount = await NewEnrollment.countDocuments({enrollmentStatus: "Enrolled"});
+        
         if(enrollments.length === 0)
         {
             return res.status(200).json({
@@ -73,6 +74,7 @@ export const getAllNewEnrollment = async(req, res) => {
                 message: "All enrollments fetched successfully",
                 success: true,
                 data: enrollments,
+                enrolledCount,
                 totalEnrollments: totalEnrollments,
                 currentPage: pageNum,
                 totalPages: limitNum > 0 ? Math.ceil(totalEnrollments / limitNum) : 1,
@@ -169,3 +171,26 @@ export const completeEnrollment = async (req, res) => {
     });
   }
 };
+
+export const deleteNewEnrollment = async(req, res) => {
+    try {
+        const deletedNewEnrollment = await NewEnrollment.findOneAndDelete({id})
+        if(!deleteNewEnrollment)
+        {
+            return res.status(404).json({
+                message: "Enrollment not found",
+                success: false,
+            })
+        }
+        return res.status(200).json({
+            message: `${deletedNewEnrollment?.name} is deleted successfully`,
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false,
+            error: error.message
+        }) 
+    }
+}
