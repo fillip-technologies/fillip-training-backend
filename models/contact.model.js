@@ -25,7 +25,7 @@ const contactSchema = new mongoose.Schema({
         type: String,
         default: "",
         trim: true,
-        minlength: [10, "Phone number must be at least 10 digits"],
+          maxlength: [10, "Phone number must be 10 digits"],
         match: [
             /^[0-9]+$/,
             "Phone number should contain only digits",

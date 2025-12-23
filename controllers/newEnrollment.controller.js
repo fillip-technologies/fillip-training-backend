@@ -174,6 +174,7 @@ export const completeEnrollment = async (req, res) => {
 
 export const deleteNewEnrollment = async(req, res) => {
     try {
+        const {id} = req.params
         const deletedNewEnrollment = await NewEnrollment.findOneAndDelete({id})
         if(!deleteNewEnrollment)
         {
