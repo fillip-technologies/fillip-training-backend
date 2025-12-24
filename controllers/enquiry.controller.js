@@ -55,12 +55,13 @@ export const getAllEnquiry = async (req, res) => {
         { phone: { $regex: search, $options: "i" } },
         { status: { $regex: search, $options: "i" } },
         { course: { $regex: search, $options: "i" } },
+        { mode: { $regex: search, $options: "i" } },
 
       ];
     }
 
     let query = Enquiry.find(filter)
-      .select("id name email phone location college course message status remark")
+      .select("id name email phone location college course message mode status remark")
       .sort({ createdAt: -1 });
 
     if (limitNum > 0) {
@@ -108,7 +109,7 @@ export const getAllEnquiry = async (req, res) => {
 export const getEnquiryById = async(req, res) => {
     try {
         const {id} = req.params;
-        const enquiry = await Enquiry.findOne({id}).select("id name email phone location college course message status remark");
+        const enquiry = await Enquiry.findOne({id}).select("id name email phone location college course message mode status remark");
         if(!enquiry)
         {
             return res.status(404).json({

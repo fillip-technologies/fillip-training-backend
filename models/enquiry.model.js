@@ -54,6 +54,11 @@ const enquirySchema = new mongoose.Schema({
         enum: ["Enquiry Pending", "Enquiry Completed"],
         default: "Enquiry Pending"
     },
+    mode: {
+        type: String,
+        enum: ["Online", "Offline"],
+        required: true,
+    },
     remark: {
         type: String,
         default: ""

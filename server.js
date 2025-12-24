@@ -18,7 +18,6 @@ import courseCategoryRoutes from "./routes/courseCategory.route.js";
 import newEnrollmentRoutes from "./routes/newEnrollment.route.js";
 import contactRoutes from "./routes/contact.route.js";
 import emailRoutes from "./routes/email.route.js";
-
 // import assignmentRoutes from "./routes/assignment.route.js";
 // import marksheetRoutes from "./routes/marksheet.route.js";
 

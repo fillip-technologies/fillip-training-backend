@@ -49,7 +49,6 @@ export const getAllNewEnrollment = async(req, res) => {
                 enrollmentStatus: 1,
                 downloadUrl: 1,
                 certificateId: 1,
-
                 courseName: "$courseInfo.courseName"
             }
         })
@@ -171,7 +170,6 @@ export const completeEnrollment = async (req, res) => {
     });
   }
 };
-
 export const deleteNewEnrollment = async(req, res) => {
     try {
         const {id} = req.params
